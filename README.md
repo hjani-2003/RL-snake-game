@@ -2,7 +2,7 @@
 
 \*the author meant to say Kon'nichiwa (hello in japanese). The author is obsessed with manga and anime :O
 
-### The repository contains code to train an agent to play the Snake Game using Reinforcement Learning framework
+### The repository contains code to train an agent to play the Snake Game using Reinforcement Learning!
 
 ### Credit:
 
