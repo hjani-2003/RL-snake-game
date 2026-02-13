@@ -12,13 +12,16 @@ LR = 0.001
 
 class Agent:
 
-    def __init__(self):
+    def __init__(self, model_path):
         self.n_games = 0
         self.epsilon = 0 # randomness
         self.gamma = 0.9 # discount rate
         self.memory = deque(maxlen=MAX_MEMORY) # if full then popleft()
         self.model = Linear_QNet(input_size=11, hidden_size=256, output_size=3)
         self.trainer = QTrainer(model=self.model, lr=LR, gamma=self.gamma)
+        if model_path is not None:
+            state_dict = torch.load(model_path, map_location="cpu", weights_only=False)
+            self.model.load_state_dict(state_dict)
 
     def get_state(self, game):
         head = game.snake[0]
@@ -101,12 +104,12 @@ class Agent:
 
 
 
-def train():
+def train(model_path):
     plot_scores = []
     plot_mean_scores = []
     total_score = 0
     record = 0
-    agent = Agent()
+    agent = Agent(model_path=model_path)
     game = SnakeGameAI()
     while True:
         # get old state
@@ -133,7 +136,7 @@ def train():
 
             if score > record:
                 record = score
-                # agent.model.save()
+                agent.model.save()
             
             print('Game: ', agent.n_games, ' Score: ', score, ' Record: ', record)
 
@@ -146,4 +149,4 @@ def train():
 
 
 if __name__ == '__main__':
-    train()
+    train(model_path="./model_weights/model.pth")
